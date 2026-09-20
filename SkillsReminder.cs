@@ -67,6 +67,7 @@ namespace SkillsReminder
         private readonly string dataRoot = @"D:\CodexData\SkillsReminder";
         private readonly string favoriteFile;
         private readonly string recentFile;
+        private readonly string followClientFile;
         private readonly int currentProcessId = Process.GetCurrentProcess().Id;
 
         private readonly TextBox searchBox = new TextBox();
@@ -76,6 +77,7 @@ namespace SkillsReminder
         private readonly Label descriptionLabel = new Label();
         private readonly Label pathLabel = new Label();
         private readonly CheckBox topMostCheck = new CheckBox();
+        private readonly CheckBox followClientCheck = new CheckBox();
         private readonly CheckBox startupCheck = new CheckBox();
         private readonly Button favoriteButton = new Button();
         private readonly Button copyNameButton = new Button();
@@ -110,6 +112,7 @@ namespace SkillsReminder
         {
             favoriteFile = Path.Combine(dataRoot, "favorites.txt");
             recentFile = Path.Combine(dataRoot, "recent.tsv");
+            followClientFile = Path.Combine(dataRoot, "follow-client.txt");
             BuildUi();
             Directory.CreateDirectory(dataRoot);
             LoadState();
@@ -238,9 +241,14 @@ namespace SkillsReminder
             topMostCheck.AutoSize = true;
             topMostCheck.Location = new Point(14, 130);
             topMostCheck.CheckedChanged += delegate { TopMost = topMostCheck.Checked; };
+            followClientCheck.Text = "跟随 GPT 窗口";
+            followClientCheck.Checked = false;
+            followClientCheck.AutoSize = true;
+            followClientCheck.Location = new Point(112, 130);
+            followClientCheck.CheckedChanged += FollowClientChanged;
             startupCheck.Text = "开机启动（默认关闭）";
             startupCheck.AutoSize = true;
-            startupCheck.Location = new Point(112, 130);
+            startupCheck.Location = new Point(240, 130);
             startupCheck.CheckedChanged += StartupChanged;
             hotKeyLabel.Text = "快捷键：Ctrl + Alt + Space";
             hotKeyLabel.AutoSize = true;
@@ -253,6 +261,7 @@ namespace SkillsReminder
             detail.Controls.Add(copyNameButton);
             detail.Controls.Add(copyPromptButton);
             detail.Controls.Add(topMostCheck);
+            detail.Controls.Add(followClientCheck);
             detail.Controls.Add(startupCheck);
             detail.Controls.Add(hotKeyLabel);
 
@@ -373,6 +382,8 @@ namespace SkillsReminder
 
         private void MonitorClientWindow(object sender, EventArgs e)
         {
+            if (!followClientCheck.Checked) return;
+
             IntPtr foreground = GetForegroundWindow();
             bool foregroundIsClient = IsClientWindow(foreground);
             bool foregroundIsReminder = IsOwnProcessWindow(foreground);
@@ -630,6 +641,19 @@ namespace SkillsReminder
                 }
             }
             startupCheck.Checked = IsStartupEnabled();
+            bool followClient;
+            followClientCheck.Checked = File.Exists(followClientFile) &&
+                bool.TryParse(File.ReadAllText(followClientFile, Encoding.UTF8).Trim(), out followClient) &&
+                followClient;
+        }
+
+        private void FollowClientChanged(object sender, EventArgs e)
+        {
+            if (initializing) return;
+            File.WriteAllText(followClientFile, followClientCheck.Checked.ToString(), new UTF8Encoding(false));
+            hiddenForClient = false;
+            manualShowOverride = false;
+            if (followClientCheck.Checked) MonitorClientWindow(sender, e);
         }
 
         private void SaveFavorites()
