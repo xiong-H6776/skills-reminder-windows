@@ -2,6 +2,12 @@
 
 一个独立、只读的 Windows 11 Skills 提醒组件。
 
+## 界面预览
+
+![Skills Reminder 在 ChatGPT 窗口右下角运行](docs/images/skills-reminder-preview.png)
+
+> 当前截图用于私有仓库展示。截图仍包含本机路径和真实 Skill 名称，公开仓库前应进一步脱敏或替换。
+
 ## 功能
 
 - 自动读取 `%USERPROFILE%\.codex\skills`，支持根目录 Junction。
