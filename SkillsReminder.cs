@@ -67,6 +67,7 @@ namespace SkillsReminder
         private readonly string dataRoot = @"D:\CodexData\SkillsReminder";
         private readonly string favoriteFile;
         private readonly string recentFile;
+        private readonly int currentProcessId = Process.GetCurrentProcess().Id;
 
         private readonly TextBox searchBox = new TextBox();
         private readonly ListView skillList = new ListView();
@@ -372,8 +373,13 @@ namespace SkillsReminder
 
         private void MonitorClientWindow(object sender, EventArgs e)
         {
-            IntPtr target = FindClientWindow();
-            if (target == IntPtr.Zero || IsIconic(target))
+            IntPtr foreground = GetForegroundWindow();
+            bool foregroundIsClient = IsClientWindow(foreground);
+            bool foregroundIsReminder = IsOwnProcessWindow(foreground);
+            IntPtr target = foregroundIsClient ? foreground : FindClientWindow();
+            bool coveredByAnotherApp = !foregroundIsClient && !foregroundIsReminder;
+
+            if (target == IntPtr.Zero || IsIconic(target) || coveredByAnotherApp)
             {
                 followedClient = target;
                 hasLastClientRect = false;
@@ -731,7 +737,7 @@ namespace SkillsReminder
 
             int processId;
             GetWindowThreadProcessId(handle, out processId);
-            if (processId == Process.GetCurrentProcess().Id) return false;
+            if (processId == currentProcessId) return false;
 
             try
             {
@@ -755,6 +761,14 @@ namespace SkillsReminder
             {
                 return false;
             }
+        }
+
+        private bool IsOwnProcessWindow(IntPtr handle)
+        {
+            if (handle == IntPtr.Zero || !IsWindow(handle)) return false;
+            int processId;
+            GetWindowThreadProcessId(handle, out processId);
+            return processId == currentProcessId;
         }
 
         private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
