@@ -14,16 +14,16 @@
 
 ### 许可与项目身份
 
-- [ ] 添加本项目的 `LICENSE`；若继续采用宽松开源方式，建议使用 MIT。
-- [ ] 添加 `THIRD_PARTY_NOTICES.md`，说明项目受到 Skills Manager 功能启发，但不是其官方组件。
+- [x] 添加本项目的 `LICENSE`；当前采用 MIT。
+- [x] 添加 `THIRD_PARTY_NOTICES.md`，说明项目受到 Skills Manager 功能启发，但不是其官方组件。
 - [ ] 如果以后复制或改编上游源码、图标或其他素材，保留对应版权声明和 MIT 许可文本。
-- [ ] 在 README 顶部注明：非 OpenAI、ChatGPT、Codex 或 Skills Manager 官方项目。
+- [x] 在 README 顶部注明：非 OpenAI、ChatGPT、Codex 或 Skills Manager 官方项目。
 - [ ] 不使用 OpenAI、ChatGPT、Codex 或上游项目的官方 Logo、图标和容易混淆的名称。
 
 ### 隐私与仓库清理
 
-- [ ] 添加 `PRIVACY.md`，说明程序读取哪些本地文件、保存哪些状态、是否联网以及如何删除数据。
-- [ ] 明确说明程序不读取聊天内容、不注入客户端、不上传 Skill 内容且默认不启用遥测。
+- [x] 添加 `PRIVACY.md`，说明程序读取哪些本地文件、保存哪些状态、是否联网以及如何删除数据。
+- [x] 明确说明程序不读取聊天内容、不注入客户端、不上传 Skill 内容且默认不启用遥测。
 - [ ] 检查全部 Git 历史，确保没有用户名、本机绝对路径、收藏记录、最近使用记录、访问令牌或其他隐私数据。
 - [ ] 不提交本机 Skills、备份目录、注册表备份、日志、编译后的 EXE 和真实使用截图。
 - [ ] 如需截图，使用虚构 Skill 和通用路径重新制作。
