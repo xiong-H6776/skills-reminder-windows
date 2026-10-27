@@ -7,9 +7,9 @@
 
 ## 界面预览
 
-![Skills Reminder 在 ChatGPT 窗口右下角运行](docs/images/skills-reminder-preview-redacted.png)
+![Skills Reminder 在 ChatGPT 窗口右下角运行](docs/images/skills-reminder-preview.png)
 
-截图中的聊天区域经过模糊处理，本机路径已脱敏。
+截图由项目维护者提供，聊天区域经过模糊处理。公开截图前请自行检查其中的路径和 Skill 名称。
 
 ## 主要功能
 
